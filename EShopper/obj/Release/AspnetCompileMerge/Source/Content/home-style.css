@@ -1,0 +1,35 @@
+﻿.flex-caption {
+
+    top: 40%;
+    left: 11%; 
+    position: absolute;
+}
+
+ul.slides li {
+    position: relative; 
+}
+.layer-slick1 span
+{
+    font-size:28px;
+    color:#333;
+    line-height:1.1;
+}
+.layer-slick2 h2 {
+    font-family: PlayfairDisplay-Bold;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: #333;
+}
+.layer-slick3 a {
+    font-size: 15px;
+    font-family: Poppins-Medium;
+    line-height:3;
+    border-radius: 23px;
+    background-color: #717fe0;
+    text-transform: uppercase;
+    color: #fff;
+    padding:10px 15px;
+}
+

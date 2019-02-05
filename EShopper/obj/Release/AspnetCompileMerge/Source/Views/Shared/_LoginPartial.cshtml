@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    string cartCount="0";
+    if (Session["CartCount"] != null)
+    {
+        cartCount = Session["CartCount"].ToString();
+    }
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+                    @Html.AntiForgeryToken()
+                    <ul class="nav navbar-nav navbar-right">
+            <li><a href="@Url.Action("Cart", "ShoppingCart")">
+                <i class="fas fa-shopping-cart"></i>
+                Cart(<span id="cart-count">@cartCount</span>)</a></li>
+            <li class="dropdown">
+                <a href="#"  data-toggle="dropdown">Welcome @User.Identity.GetUserName()</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        @Html.ActionLink("My account", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    </li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+
+        <li><a href="@Url.Action("Cart","ShoppingCart")"><i class="fas fa-shopping-cart cartIcon"></i>Cart(0)</a></li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

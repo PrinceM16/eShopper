@@ -1,0 +1,193 @@
+﻿@model IEnumerable<EShopper.Models.ShoppingCart>
+@{
+    ViewBag.Title = "Shopping Cart";
+    decimal sum = 0;
+}
+
+<div class="container body-content">
+    <div class="col-md-12" style="margin-bottom:30px;">
+        <div>
+            @Html.ActionLink("Home >", "Index", "Home")
+            @Html.ActionLink("Shop >", "Shop", "Home")
+            <span style="color:#999;">Shopping Cart</span>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="shopping-cart">
+            <h3 class="text-center cart-empty" style="color:#333;visibility:hidden;">Your cart is currently empty.</h3>
+            @if (Model.Any())
+            {
+                <table class="table-shopping-cart">
+                    <tr>
+                        <th>Product</th>
+                        <th></th>
+                        <th></th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var cartItem in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div>
+                                    <a href=@Url.Action("ProductDetails", "Product", new { id = cartItem.Product.ProductId })>
+                                        <img style="width:60px;height:80px;" src="@cartItem.Product.ProductImageUrl" />
+                                    </a>
+                                </div>
+                            </td>
+                            <td>@Html.ActionLink(cartItem.Product.ProductName, "ProductDetails", "Product", new { id = cartItem.Product.ProductId }, null)</td>
+                            <td>
+                                <div>
+                                    <p>Size:@cartItem.Size</p>
+                                    <p>Color:@cartItem.Color</p>
+                                </div>
+                            </td>
+                            <td>$@Html.LabelForModel(cartItem.Product.Price.ToString(), new { id = "productPrice" + cartItem.CartId, style = "font-wegith:normal;" })</td>
+                            <td>
+                                <div class="item-amount">
+                                    <button type="button" class="text-center minus-btn" data-product-id="@cartItem.CartId"><i class="fas fa-minus"></i></button>
+                                    <div style="float:left">@Html.TextBox("cartQuantity" + @cartItem.CartId, cartItem.Quantity, new { @class = "text-center quantity-text" })</div>
+                                    <button type="button" class="text-center plus-btn" data-product-stock="@cartItem.Product.Stock" data-product-id="@cartItem.CartId"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </td>
+                            @{
+
+                                var itemTotalPrice = cartItem.Quantity * cartItem.Product.Price;
+                                sum += itemTotalPrice;
+                            }
+                            <td>$@Html.LabelForModel(itemTotalPrice.ToString(), new { id = "itemTotalPrice" + cartItem.CartId })</td>
+                            <td><div class="delete-btn" data-product-id="@cartItem.CartId"><i class="far fa-trash-alt"></i></div></td>
+                        </tr>
+                                }
+
+                    <tr>
+                        <td colspan="4" style="font-size:18px;">
+                            <div class="total-price">Total:$<span id="totalAmount">@sum</span></div>
+                        </td>
+                        <td colspan="3">
+                            @Html.ActionLink("Proceed to Checkout", "Checkout", "Shoppingcart", null, new { @class = "check-out-btn" })
+                        </td>
+                    </tr>
+
+                </table>
+         }
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            if (parseInt($("#cart-count").text()) == 0) {
+                $(".cart-empty").css("visibility", "visible");
+            }
+            //Minus quantity
+            $(".minus-btn").click(function () {
+                var prodcutId = $(this).attr("data-product-id");
+                var quantity = $("#cartQuantity" + prodcutId);
+                var price = $("#productPrice" + prodcutId);
+                var itemTotalPrice = $("#itemTotalPrice" + prodcutId);
+                if (quantity.val() > 1) {
+                    $.ajax({
+                        url: "/api/shoppingCart/MinusQuantity?id=" + prodcutId,
+                        type: "Post",
+                        success: function () {
+                            quantity.val(parseInt(quantity.val()) - 1);
+                            var totalPrice = parseFloat(itemTotalPrice.text()) - parseFloat(price.text());
+                            itemTotalPrice.text(totalPrice.toFixed(2));
+
+                            var totalAmount = parseFloat($("#totalAmount").text()) - parseFloat(price.text());
+                            $("#totalAmount").text(totalAmount.toFixed(2));
+                        },
+                        error: function () {
+                            console.log("Failure");
+                        }
+                    });
+                }
+            });
+
+            //Plus quantity
+            $(".plus-btn").click(function () {
+
+                var prodcutId = $(this).attr("data-product-id");
+                var quantity = $("#cartQuantity" + prodcutId);
+                var price = $("#productPrice" + prodcutId);
+                var itemTotalPrice = $("#itemTotalPrice" + prodcutId);
+
+                var stock = $(this).attr("data-product-stock");
+                var quantityNum = quantity.val();
+
+                if (parseInt(quantityNum) < parseInt(stock)) {
+                    $.ajax({
+                        url: "/api/shoppingCart/PlusQuantity?id=" + prodcutId,
+                        type: "Post",
+                        success: function () {
+                            quantity.val(parseInt(quantity.val()) + 1);
+                            var total = parseFloat(itemTotalPrice.text()) + parseFloat(price.text());
+                            itemTotalPrice.text(total.toFixed(2));
+
+                            var totalAmount = parseFloat($("#totalAmount").text()) + parseFloat(price.text());
+                            $("#totalAmount").text(totalAmount.toFixed(2));
+                        },
+                        error: function () {
+                            console.log("Failure");
+                        }
+                    });
+                }
+                else {
+                    toastr["error"]("Quanity greater then total stock!");
+                }
+            });
+
+           
+            //Delete cart item
+            $(".delete-btn").click(function () {
+                var button = $(this);
+                var itemTotalPrice = $("#itemTotalPrice" + $(this).attr("data-product-id"));
+                $.ajax({
+                    url: "/api/shoppingCart/DeleteCartItemById?id=" + $(this).attr("data-product-id"),
+                    type: "Post",
+                    success: function () {
+                        button.parents("tr").remove();
+                        var newSum = $("#totalAmount").text() - itemTotalPrice.text();
+                        $("#totalAmount").text(newSum.toFixed(2));
+                        $("#cart-count").text(parseInt($("#cart-count").text()) - 1);
+                        if (parseInt($("#cart-count").text()) == 0) {
+                            $(".table-shopping-cart").hide();
+                            $(".cart-empty").css("visibility", "visible");
+                        }
+                        $.post("/ShoppingCart/UpdateCartCountSession", function () {
+                            console.log("CartCountSession updated successfully");
+                        });
+                    },
+                    error: function () {
+                        console.log("Failure");
+                    }
+                });
+            });
+
+            
+        });
+    </script>
+}
+

@@ -1,0 +1,136 @@
+﻿@model EShopper.Models.Product
+@{
+    ViewBag.Title = "Product Detail";
+}
+<div class="container body-content">
+    <div class="row">
+        <div class="col-md-12" style="margin-bottom:30px;">
+            <div style="padding-left:15px;">
+                @Html.ActionLink("Home >", "Index", "Home")
+                @Html.ActionLink("Shop >", "Shop", "Home")
+                <span style="color:#999;">@Model.ProductName</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="product-img">
+                <img src="@Model.ProductImageUrl" alt="product-img" />
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top:50px;">
+            @using (Html.BeginForm("AddCart", "ShoppingCart"))
+            {
+                var selectSizeList = new SelectList(
+                    new List<SelectListItem>
+                    {
+                            new SelectListItem{Selected=true,Text="Choose an option",Value="-1"},
+                            new SelectListItem{Text="Size S",Value="1"},
+                            new SelectListItem{Text="Size M",Value="2"},
+                            new SelectListItem{Text="Size L",Value="3"},
+                            new SelectListItem{Text="Size XL",Value="4"}
+                    }, "value", "text"
+                    );
+                var selectColorList = new SelectList(
+                    new List<SelectListItem>
+                    {
+                            new SelectListItem{Selected=true,Text="Choose an option",Value="-1"},
+                            new SelectListItem{Text="Red",Value="1"},
+                            new SelectListItem{Text="Green",Value="2"},
+                            new SelectListItem{Text="Blue",Value="3"},
+                            new SelectListItem{Text="Grey",Value="4"}
+                    }, "value", "text"
+                    );
+                @Html.Hidden("id", Model.ProductId)
+                <div class="product-detail">
+                    <h4>@Model.ProductName</h4>
+                    <span>$@Model.Price</span>
+                </div>
+
+                <div class="product-size">
+                    <span>Size</span>
+                    @Html.DropDownList("Size", selectSizeList)
+                </div>
+                <div class="product-color">
+                    <span>Color</span>
+                    @Html.DropDownList("Color", selectColorList)
+                </div>
+                <div class="item-amount">
+                    <button type="button" class="text-center minus-btn"><i class="fas fa-minus"></i></button>
+                    <div style="float:left">@Html.TextBox("cartQuantity", "1", new { @class = "text-center quantity-text" })</div>
+                    <button type="button" class="text-center plus-btn"><i class="fas fa-plus"></i></button>
+                </div>
+                <div>
+                    <button type="submit" class="add-to-cart-btn">Add To Cart</button>
+                </div>
+            }
+        </div>
+        
+    </div>
+    <div>
+    <div style="padding:30px 10px;">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#description">Description</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#additionalInformation">Additional Information</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="description" class="tab-pane active">
+                <p style="padding:20px;color:#888;line-height:1.1;">This beautiful floral tee is simply dreamy
+                - you're sure to love wearing it all season long! 
+                We love the gorgeous floral print in white, pink and light blue - it's such a timelessly chic combination! 
+                The material is wonderfully soft and has some stretch for the perfect fit and feel! And the trendy cutout design at sleeves is so easy to love! 
+                This top also features a spaghetti strap and cute 3/4 sleeves!</p>
+            </div>
+            <div  id="additionalInformation" class="tab-pane">
+                <div style="padding:20px;color:#888;line-height:1.1;">
+                    <h5>Weight:0.79kg</h5>
+                    <h5>Material:60% cotton</h5>
+                </div>
+            </div>
+        </div>
+    </div>    
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            $(".minus-btn").click(function () {
+                if ($("#cartQuantity").val() > 1) {
+                    
+                    $("#cartQuantity").val(parseInt($("#cartQuantity").val()) - 1);
+                }
+            });
+            $(".plus-btn").click(function () {
+                if ($("#cartQuantity").val() < @Model.Stock) {
+                    $("#cartQuantity").val(parseInt($("#cartQuantity").val()) + 1);
+                }
+                else
+                {
+                    toastr["error"]("Quanity greater then total stock!");
+                }
+            });
+    });
+    </script>
+}
+

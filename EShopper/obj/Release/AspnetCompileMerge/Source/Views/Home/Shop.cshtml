@@ -1,0 +1,109 @@
+﻿@model IEnumerable<EShopper.Models.Product>
+@{
+    ViewBag.Title = "Shop";
+}
+<div class="container" style="padding-top:80px;">
+    <div class="row">
+        <div class="menu">
+            <ul style="padding-left:15px;">
+                <li><a class="active" data-filter="*">All Products</a></li>
+                <li><a data-filter=".women">Women</a></li>
+                <li><a data-filter=".men">Men</a></li>
+                <li><a data-filter=".kids">Kids</a></li>
+            </ul>
+        </div>
+        <div class="products">
+            @*@foreach (var product in Model)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 item @product.Category.CategoryName.ToLower()">
+                        <div class="hov-img">
+                            <a href=@Url.Action("ProductDetails","Product", new { id = @product.ProductId })>
+                                <img alt="img-product" src="@product.ProductImageUrl" />
+                            </a>
+                            <a class="view-btn" href="#">Quick View</a>
+                        </div>
+                        <div class="img-txt text-center">
+                            @Html.ActionLink(product.ProductName, "ProductDetails", "Product", new { id = product.ProductId }, null)
+                            <br />
+                            <span>$@product.Price</span>
+                        </div>
+                    </div>
+                }*@
+        </div>
+
+    </div>
+    
+</div>
+<div class="text-center">
+    <button class="load-more-btn">Load More</button>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            var currentPageNumber = 1;
+            var pageSize = 4;
+
+            LoadMoreProducts(currentPageNumber);
+
+            $(".load-more-btn").click(function () {
+                currentPageNumber += 1;
+                LoadMoreProducts(currentPageNumber);
+            });
+            //$(window).scroll(function () {
+            //    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            //        currentPageNumber += 1;
+            //        LoadMoreProducts(currentPageNumber);
+            //    }
+
+            //});
+           
+            function LoadMoreProducts(currentPageNumber) {
+                $.ajax({
+                    type: "Get",
+                    url: "/api/ProductData",
+                    data: { PageNumber: currentPageNumber, pageSize: pageSize },
+                    success: function (jsonData) {
+                        if (jsonData == null) {
+                            alert("No data returned")
+                            return;
+                        }
+                        console.log(jsonData)
+                        $.each(jsonData, function (index, product) {
+                            var productString = '<div class="col-sm-6 col-md-4 col-lg-3 item ' + product.Category.CategoryName.toLowerCase() + '">' +
+                                '<div class="hov-img">' +
+                                '<a href="/Product/ProductDetails/' + product.ProductId + '">' +
+                                '<img alt="img-product" src="' + product.ProductImageUrl + '">' +
+                                '</a>' +
+                                '</div>' +
+                                '<div class="img-txt text-center">' +
+                                '<a href="/Product/ProductDetails/' + product.ProductId + '">' + product.ProductName + '</a>' +
+                                '<br>' +
+                                '<span>$' + product.Price + '</span>' +
+                                '</div>' +
+                                '</div >';
+
+
+                            //$(".products").append(productString);
+                            var $newItems = $(productString);
+                            $('.products').isotope('insert', $newItems);
+                            if (currentPageNumber > 1) {
+                                $(".load-more-btn").css("margin-top", "400px")
+                            }
+
+                            @*if (currentPageNumber * pageSize >= @Model.Count()) {
+                                $(".load-more-btn").hide();
+                            }*@
+                        });
+                    },
+                    error: function (ex) {
+                        alert(ex);
+                    }
+                });
+            }
+        });
+
+        
+    </script>
+}

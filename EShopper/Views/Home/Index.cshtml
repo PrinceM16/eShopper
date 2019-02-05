@@ -1,0 +1,94 @@
+﻿@model IEnumerable<EShopper.Models.Product>
+@{
+    ViewBag.Title = "Home";
+}
+<script type="text/javascript">
+    $(window).load(function () {
+        $('.flexslider').flexslider({
+            animation: "fade",
+            animationSpeed: 3000, 
+            controlNav: false,
+            directionNav: true,
+        });
+    });
+</script>
+<section>
+    <div class="flexslider" style="border:none;margin:0px;">
+        <ul class="slides">
+            <li>
+                <img style="height:900px;width:1858px;" src="~/images/slide-01.jpg"/>
+                <div class="flex-caption">
+                    <div class="layer-slick1 animated fadeInDown" style="animation-delay:1s">
+                        <span>
+                            Women Collection 2018
+                        </span>
+                    </div>
+                    <div class="layer-slick2  animated fadeInUp" style="animation-delay:2s">
+                        <h2>
+                            NEW SEASON
+                        </h2>
+                    </div>
+                    <div class="layer-slick3 animated zoomIn" style="animation-delay:3s">
+                        <a href="@Url.Action("Shop","Home")">
+                            Shop Now
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <img style="height:900px;width:1858px;" src="~/images/slide-03.jpg" />
+                <div class="flex-caption">
+                    <div class="layer-slick1 animated rotateInUpLeft" style="animation-delay:8s">
+                        <span>
+                            Men New Season
+                        </span>
+                    </div>
+                    <div class="layer-slick2 animated rotateInUpRight" style="animation-delay:9s">
+                        <h2>
+                            Jakects&Coats
+                        </h2>
+                    </div>
+                    <div class="layer-slick3 animated rotateIn" style="animation-delay:10s">
+                        <a href="@Url.Action("Shop","Home")">
+                            Shop Now
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<div class="container" style="margin-top:25px;">
+   <div class="product-overview">
+       <h3>Product Overview</h3>
+   </div>
+    <div class="row">
+        <div class="menu">
+            <ul style="padding-left:15px;">
+                <li><a class="active" data-filter="*">All Products</a></li>
+                <li><a data-filter=".women">Women</a></li>
+                <li><a data-filter=".men">Men</a></li>
+                <li><a data-filter=".kids">Kids</a></li>
+            </ul>
+        </div>
+        <div class="products">
+            @foreach (var product in Model)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 item @product.Category.CategoryName.ToLower()">
+                    <div class="hov-img">
+                        <a href=@Url.Action("ProductDetails","Product", new { id = @product.ProductId })>
+                            <img alt="img-product" src="@product.ProductImageUrl" />
+                        </a>
+                        @*<a class="view-btn" href="#">Quick View</a>*@
+                    </div>
+                    <div class="img-txt text-center">
+                        @Html.ActionLink(product.ProductName,"ProductDetails","Product",new { id=product.ProductId},null)
+                        <br />
+                        <span>$@product.Price</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

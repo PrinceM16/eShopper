@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<section class="bg-img" style="background-image:url('../images/bg-02.jpg');">
+    <h2 class="text-center h2-font" >Contact</h2>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div id="googleMap" style="height:400px;" class="col-md-6 text-center border">
+            </div>
+            <div class="col-md-6 border contact-info">
+                <div>
+                    <p style="font-size:25px;"><span class="glyphicon glyphicon-map-marker"></span>  Address</p>
+                    <p>Auckland, New Zealand</p>
+                </div>
+                <div>
+                    <p style="font-size:25px;"><span class="glyphicon glyphicon-earphone"></span>  Let's talk</p>
+                    <p>+64(0)273917578</p>
+                </div>
+                <div>
+                    <p style="font-size:25px;"><span class="glyphicon glyphicon-envelope"></span>  Sale Support</p>
+                    <p>contact@eshopper.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function myMap() {
+        var myCenter = new google.maps.LatLng(-36.848461, 174.763336);
+        var mapProp = {
+            center: myCenter,
+            zoom: 12,
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        var marker = new google.maps.Marker({ position: myCenter });
+        marker.setMap(map);
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDeyeBFPmsJLGyxt9zQRXbbhzgOghju-A&callback=myMap"></script>
+
