@@ -329,7 +329,6 @@ textarea:focus {
     width: 45px;
     height: 45px;
     float: left;
-    overflow: hidden;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;

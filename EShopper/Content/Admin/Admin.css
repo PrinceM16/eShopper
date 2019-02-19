@@ -1,0 +1,24 @@
+﻿.dropdown .lnr {
+    position: absolute;
+    top: 30%;
+    right: -15%;
+    color: #68AE00;
+    font-size: 2.0em;
+}
+.image img {
+    border-radius: 50%;
+    margin-top:10px;
+}
+.username p {
+    font-size: 1.25em;
+    color: #fc8213;
+    line-height: 1em;
+    font-weight: 700;
+}
+.username span {
+    font-size: 1.12em;
+    font-style: italic;
+    color: #424f63;
+    font-weight: normal;
+    margin-top: .3em;
+}

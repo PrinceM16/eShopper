@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - eShopper</title>
     <link href="~/Content/Admin/LayoutAdmin.css" rel="stylesheet" />
+    <link href="~/Content/Admin/Admin.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -20,7 +21,7 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a class="navbar-brand" href="/">eShopper</a>
+                <a class="navbar-brand" href="@Url.Action("Index","Admin")">eShopper</a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1 ps">
                 <nav class="navbar-sidebar">
@@ -31,46 +32,21 @@
                             </a>
                         </li>
                         <li>
-                            <a href="chart.html">
+                            <a href="#">
                                 <i class="fas fa-chart-bar"></i>Charts
                             </a>
                         </li>
                         <li>
-                            <a href="table.html">
-                                <i class="fas fa-table"></i>Tables
-                            </a>
-                        </li>
-                        <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms
+                            <a href="#">
+                                <i class="fas fa-map-marker-alt"></i>Maps
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <i class="fas fa-calendar-alt"></i>Calendar
+                                <i class="fas fa-shopping-cart"></i>E-commerce
+                                <i class="fas fa-angle-right" style="float:right"></i>
                             </a>
                         </li>
-                        <li>
-                            <a href="map.html">
-                                <i class="fas fa-map-marker-alt"></i>Maps
-                            </a>
-                        </li>
-                        @*<li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>Pages
-                            </a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="login.html">Login</a>
-                                </li>
-                                <li>
-                                    <a href="register.html">Register</a>
-                                </li>
-                                <li>
-                                    <a href="forget-pass.html">Forget Password</a>
-                                </li>
-                            </ul>
-                        </li>*@
                     </ul>
                 </nav>
                 <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
@@ -103,18 +79,32 @@
                                         <i class="zmdi zmdi-notifications"></i>
                                         <span class="quantity">3</span>
                                     </div>
-                                </div>
-                                <div class="account-wrap">
-                                    <div class="account-item clearfix js-item-menu">
-                                        <div class="image">
-                                            <img src="images/icons/avatar-01.jpg" alt="John Doe">
-                                        </div>
-                                        <div class="content">
-                                            <a class="js-acc-btn" href="#">@User.Identity.GetUserName()</a>
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            <div class="account-wrap dropdown  keep-open">
+                                                <div class="account-item clearfix js-item-menu dropdown-toggle" data-toggle="dropdown">
+                                                    <div class="image">
+                                                        <img src="images/icons/avatar-01.jpg" alt="Jim Lin">
+                                                    </div>
+                                                    <div class="content username">
+                                                        <p>@User.Identity.GetUserName()</p>
+                                                        <span>Administrator</span>
+                                                    </div>
+                                                    <i class="fa fa-angle-down lnr"></i>
+                                                </div>
+
+                                                @Html.AntiForgeryToken()
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#"><i class="fa fa-user"></i>Profile</a></li>
+                                                    <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fas fa-sign-out-alt"></i>Log off</a></li>
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
                                         </div>
 
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,6 +128,15 @@
         </div>
         <!-- END MAIN CONTENT-->
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.dropdown.keep-open').on({
+                "shown.bs.dropdown": function () { this.closable = false; },
+                "click": function () { this.closable = true; },
+                "hide.bs.dropdown": function () { return this.closable; }
+            });
+        });
+    </script>
 </body>
 </html>
 @RenderBody()

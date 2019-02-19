@@ -266,6 +266,7 @@
     <Content Include="App_Data\eShopper_log.ldf">
       <DependentUpon>eShopper.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\Admin\Admin.css" />
     <Content Include="Content\Admin\LayoutAdmin.css" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap.css" />
