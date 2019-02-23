@@ -412,6 +412,7 @@
     <Content Include="Views\ShoppingCart\Cart.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\AdminShared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\ListProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />

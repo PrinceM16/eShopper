@@ -19,7 +19,7 @@
     <div class="page-wrapper">
 
         <!-- MENU SIDEBAR-->
-        <aside class="menu-sidebar d-none d-lg-block">
+        <aside style="border-right:1px solid #e6e6e6" class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a class="navbar-brand" href="@Url.Action("Index","Admin")">eShopper</a>
             </div>
@@ -27,29 +27,47 @@
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="#">
+                            <a href="#">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard
                             </a>
                         </li>
-                        <li>
+                        <li class="has-sub">
                             <a href="#">
                                 <i class="fas fa-chart-bar"></i>Charts
                             </a>
                         </li>
-                        <li>
+                        <li class="has-sub">
                             <a href="#">
                                 <i class="fas fa-map-marker-alt"></i>Maps
                             </a>
                         </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-shopping-cart"></i>E-commerce
+                        <li class="has-sub">
+                            <a href="#" data-toggle="collapse" data-target="#e-commerce">
+                                <i class="fas fa-shopping-cart"></i><span>E-commerce</span>
                                 <i class="fas fa-angle-right" style="float:right"></i>
                             </a>
+                            <div class="collapse" id="e-commerce">
+                                <ul>
+                                    <li class="nav-list"> <a href="@Url.Action("ListProduct","Admin")">Product List</a></li>
+                                    <li class="nav-list"> <a>Order List</a></li>
+                                </ul>
+                            </div>
                         </li>
+                        <li class="has-sub">
+                            <a href="#"  data-toggle="collapse" data-target="#system-settings">
+                                <i class="fas fas fa-cog"></i><span>System Settings</span>
+                                <i class="fas fa-angle-right" style="float:right"></i>
+                            </a>
+                            <div class="collapse" id="system-settings">
+                                <ul>
+                                    <li class="nav-list"> <a>User List</a></li>
+                                    <li class="nav-list"> <a>Role & Permission</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
                     </ul>
                 </nav>
-                <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
             </div>
         </aside>
         <!-- END MENU SIDEBAR-->
@@ -86,7 +104,7 @@
                                             <div class="account-wrap dropdown  keep-open">
                                                 <div class="account-item clearfix js-item-menu dropdown-toggle" data-toggle="dropdown">
                                                     <div class="image">
-                                                        <img src="images/icons/avatar-01.jpg" alt="Jim Lin">
+                                                        <img src="images/icons/avatar-01.jpg" alt="@User.Identity.GetUserName()">
                                                     </div>
                                                     <div class="content username">
                                                         <p>@User.Identity.GetUserName()</p>
@@ -119,7 +137,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="overview-wrap">
-                                <h2 class="title-1">overview</h2>
+                                @RenderBody()
                             </div>
                         </div>
                     </div>
@@ -130,14 +148,18 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.dropdown.keep-open').on({
-                "shown.bs.dropdown": function () { this.closable = false; },
-                "click": function () { this.closable = true; },
-                "hide.bs.dropdown": function () { return this.closable; }
+            $('.navbar-sidebar .has-sub a').on('click', function () {
+                $('.navbar-sidebar').find('li.active').removeClass('active');
+                $(this).parent('li').addClass('active');
             });
+
+            //$('.dropdown.keep-open').on({
+            //    "shown.bs.dropdown": function () { this.closable = false; },
+            //    "click": function () { this.closable = true; },
+            //    "hide.bs.dropdown": function () { return this.closable; }
+            //});
         });
     </script>
 </body>
 </html>
-@RenderBody()
 

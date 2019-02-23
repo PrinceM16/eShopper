@@ -1,0 +1,53 @@
+﻿@model IEnumerable<EShopper.Models.Product>
+@{
+    ViewBag.Title = "ListProduct";
+    Layout = "~/Views/AdminShared/_LayoutAdmin.cshtml";
+}
+
+<h2>All Products(@Model.Count())</h2>
+<div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="shopping-cart">
+        <h3 class="text-center cart-empty" style="color:#333;visibility:hidden;">Your cart is currently empty.</h3>
+        @if (Model.Any())
+        {
+            <table class="table-shopping-cart">
+                <tr>
+                    <th>Product</th>
+                    <th></th>
+                    <th></th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th></th>
+                </tr>
+                @foreach (var product in Model)
+                {
+                <tr>
+                    <td>
+                        <div>
+                            <a href=@Url.Action("ProductDetails", "Product", new { id = product.ProductId })>
+                                <img style="width:60px;height:80px;" src="@product.ProductImageUrl" />
+                            </a>
+                        </div>
+                    </td>
+                    <td>@Html.ActionLink(product.ProductName, "ProductDetails", "Product", new { id = product.ProductId }, null)</td>
+                    <td>
+                        <div>
+                            <p>Size:@product.Size</p>
+                            <p>Color:@product.Color</p>
+                        </div>
+                    </td>
+                    <td>$@Html.LabelForModel(product.Price.ToString(), new { id = "productPrice", style = "font-wegith:normal;" })</td>
+
+                    <td>@Html.LabelForModel(product.Stock.ToString(), new { id = "productStock", style = "font-wegith:normal;" })</td>
+
+
+                    <td  class="delete-btn"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                </tr>
+                }
+
+
+            </table>
+        }
+    </div>
+</div>
+

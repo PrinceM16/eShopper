@@ -383,11 +383,16 @@ textarea:focus {
     padding-top: 116px;
     min-height: 100vh;
     margin-left: 300px;
-    background-color: #E5E5E5;
 }
 
 @media (max-width: 991px) {
     .main-content {
         padding-top: 50px;
     }
+}
+
+/*Side bar*/
+.nav-list {
+    list-style: none;
+    cursor: pointer;
 }

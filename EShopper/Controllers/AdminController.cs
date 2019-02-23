@@ -15,9 +15,11 @@ namespace EShopper.Controllers
         {
             db = new ApplicationDbContext();
         }
-
-
-
+        public ActionResult ListProduct()
+        {
+            var products = db.Products.ToList();
+            return View(products);
+        }
         // GET: Admin
         public ActionResult Index()
         {
