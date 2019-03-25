@@ -13,7 +13,7 @@
             </ul>
         </div>
         <div class="products">
-            @*@foreach (var product in Model)
+            @foreach (var product in Model)
                 {
                     <div class="col-sm-6 col-md-4 col-lg-3 item @product.Category.CategoryName.ToLower()">
                         <div class="hov-img">
@@ -28,15 +28,15 @@
                             <span>$@product.Price</span>
                         </div>
                     </div>
-                }*@
+                }
         </div>
 
     </div>
     
 </div>
-<div class="text-center">
+@*<div class="text-center">
     <button class="load-more-btn">Load More</button>
-</div>
+</div>*@
 @section scripts
 {
     <script>
@@ -45,12 +45,12 @@
             var currentPageNumber = 1;
             var pageSize = 4;
 
-            LoadMoreProducts(currentPageNumber);
+            //LoadMoreProducts(currentPageNumber);
 
-            $(".load-more-btn").click(function () {
-                currentPageNumber += 1;
-                LoadMoreProducts(currentPageNumber);
-            });
+            //$(".load-more-btn").click(function () {
+            //    currentPageNumber += 1;
+            //    LoadMoreProducts(currentPageNumber);
+            //});
             //$(window).scroll(function () {
             //    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
             //        currentPageNumber += 1;

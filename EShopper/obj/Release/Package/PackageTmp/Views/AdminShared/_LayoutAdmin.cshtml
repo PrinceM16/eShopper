@@ -1,0 +1,165 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - eShopper</title>
+    <link href="~/Content/Admin/LayoutAdmin.css" rel="stylesheet" />
+    <link href="~/Content/Admin/Admin.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/main")
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+
+        <!-- MENU SIDEBAR-->
+        <aside style="border-right:1px solid #e6e6e6" class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a class="navbar-brand" href="@Url.Action("Index","Admin")">eShopper</a>
+            </div>
+            <div class="menu-sidebar__content js-scrollbar1 ps">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="active has-sub">
+                            <a href="#">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#">
+                                <i class="fas fa-chart-bar"></i>Charts
+                            </a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#">
+                                <i class="fas fa-map-marker-alt"></i>Maps
+                            </a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" data-toggle="collapse" data-target="#e-commerce">
+                                <i class="fas fa-shopping-cart"></i><span>E-commerce</span>
+                                <i class="fas fa-angle-right" style="float:right"></i>
+                            </a>
+                            <div class="collapse" id="e-commerce">
+                                <ul>
+                                    <li class="nav-list"> <a href="@Url.Action("ListProduct","Admin")">Product List</a></li>
+                                    <li class="nav-list"> <a>Order List</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#"  data-toggle="collapse" data-target="#system-settings">
+                                <i class="fas fas fa-cog"></i><span>System Settings</span>
+                                <i class="fas fa-angle-right" style="float:right"></i>
+                            </a>
+                            <div class="collapse" id="system-settings">
+                                <ul>
+                                    <li class="nav-list"> <a>User List</a></li>
+                                    <li class="nav-list"> <a>Role & Permission</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
+        <!-- HEADER DESKTOP-->
+        <div class="page-container">
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports...">
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+                                <div class="noti-wrap">
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-comment-more"></i>
+                                        <span class="quantity">1</span>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-email"></i>
+                                        <span class="quantity">1</span>
+                                    </div>
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity">3</span>
+                                    </div>
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            <div class="account-wrap dropdown  keep-open">
+                                                <div class="account-item clearfix js-item-menu dropdown-toggle" data-toggle="dropdown">
+                                                    <div class="image">
+                                                        <img src="images/icons/avatar-01.jpg" alt="@User.Identity.GetUserName()">
+                                                    </div>
+                                                    <div class="content username">
+                                                        <p>@User.Identity.GetUserName()</p>
+                                                        <span>Administrator</span>
+                                                    </div>
+                                                    <i class="fa fa-angle-down lnr"></i>
+                                                </div>
+
+                                                @Html.AntiForgeryToken()
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#"><i class="fa fa-user"></i>Profile</a></li>
+                                                    <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fas fa-sign-out-alt"></i>Log off</a></li>
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+                                        </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- END HEADER DESKTOP-->
+        <!-- MAIN CONTENT-->
+        <div class="main-content">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT-->
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.navbar-sidebar .has-sub a').on('click', function () {
+                $('.navbar-sidebar').find('li.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+            });
+
+            //$('.dropdown.keep-open').on({
+            //    "shown.bs.dropdown": function () { this.closable = false; },
+            //    "click": function () { this.closable = true; },
+            //    "hide.bs.dropdown": function () { return this.closable; }
+            //});
+        });
+    </script>
+</body>
+</html>
+

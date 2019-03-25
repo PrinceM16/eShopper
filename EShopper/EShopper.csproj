@@ -262,10 +262,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\eShopper.mdf" />
-    <Content Include="App_Data\eShopper_log.ldf">
-      <DependentUpon>eShopper.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\Admin\Admin.css" />
     <Content Include="Content\Admin\LayoutAdmin.css" />
     <Content Include="Content\animate.css" />
@@ -358,6 +354,8 @@
     <Content Include="Content\fonts\Material-Design-Iconic-Font.ttf" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff" />
     <Content Include="Content\fonts\Material-Design-Iconic-Font.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -415,7 +413,7 @@
     <Content Include="Views\Admin\ListProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
